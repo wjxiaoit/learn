@@ -33,10 +33,6 @@ def user_exists(name):
     key = select(sql)[0][0]
     return key
 
-
-
-
-
 if __name__ == "__main__":
     print("Welcome regster,please input your infomation.")
     while True:
