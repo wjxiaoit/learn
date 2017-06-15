@@ -1,6 +1,6 @@
 #-*-coding: utf-8 -*-
 import pymysql
-import time
+from datetime import datetime
 
 def select(sql):
     conn = pymysql.connect(user='root', passwd='admin', host='192.168.174.129', db='learn')
@@ -41,30 +41,36 @@ def re_time():
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return dt
 
+def lock_user(name):
+    lt = re_time()
+    sql = "insert into lock_user(user,datetime) values('%s','%s')"%(name,lt)
+    insert(sql)
+
+
 count = 0
 err_count = 0
-while count < 4:
-    if err_count > 3:
-        print("Account is locked,Please contact administrator!")
+
+while True:
+    if err_count == 3:
+        lock_user(name)
+        print("%s is lock,not use!"%(name))
         break
-    print("Welcome Login in !")
-    name=input("UserName:")
+    print("Welcome!")
+    name = input("UserName: ")
     lock_key = user_lock(name)
     if lock_key == 1:
-        print("User is locked! Please contact administrator!")
+        print("User is locked!")
         break
     user_key = user_exists(name)
-    if user_key == 1:
-        passwd = input("Password: ")
-        (s_user,s_passwd) = get_user(name)
-        if s_user == name and passwd == s_passwd:
-            print("Login sussce!")
-            break
-        else:
-            print("Username or password error!")
-            err_count += 1
-            break
+    if user_key == 0:
+        print("User not exists!")
+        break
+    passwd = input("Password: ")
+    (s_user, s_passwd) = get_user(name)
+    if name == s_user and passwd == s_passwd:
+        print("Login sussce!")
+        break
     else:
-        print("UserName not exists,Please try again!")
-        count += 1
+        print("Username or password error!")
+        err_count += 1
         continue
