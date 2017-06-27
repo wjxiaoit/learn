@@ -9,7 +9,10 @@ for index,item in enumerate(product_list):
 shop = {1:['iphone',5000],2:['mac_pro',12000],3:['book',105],4:['bick',2500],5:['htc',6000]}
 cart = []
 
-salary = int(input('Pleans input your salary :'))
+salary = input('Pleans input your salary :')
+if salary.isdigit():
+    salary = int(salary)
+
 while  salary > 0:
     for k,v in shop.items():
         num = k
@@ -26,10 +29,11 @@ while  salary > 0:
     else:
         if choose.isdigit():
             choose = int(choose)
-        if choose > len(shop) and choose < 0:
+        if choose > len(shop) or choose < 0:
             print('Input error,try again!')
             continue
-        cart.append(shop[int(choose)])
+        cart.append(shop[choose])
+
         salary -= cart[len(cart)-1][1]
         print("salary: \033[31;1m%d\033[0m" %(salary))
         continue
