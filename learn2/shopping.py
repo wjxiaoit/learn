@@ -1,6 +1,10 @@
 #-*-coding: utf-8 -*-
 
-
+'''
+如果商品列表定义为列表：
+for index,item in enumerate(product_list):
+    print(index,item)
+'''
 
 shop = {1:['iphone',5000],2:['mac_pro',12000],3:['book',105],4:['bick',2500],5:['htc',6000]}
 cart = []
@@ -13,14 +17,20 @@ while  salary > 0:
         price = v[1]
         if salary > price:
             print(num,name,price)
-    chooes = input("Please chooes goods or 'q' quit :")
-    if chooes == "q":
+    choose = input("Please choose goods or 'q' quit :")
+
+    if choose == "q":
         print(cart)
-        print("salary: %d" %(salary))
+        print("salary: \033[31;1m%d\033[0m" %(salary))
         break
     else:
-        cart.append(shop[int(chooes)])
+        if choose.isdigit():
+            choose = int(choose)
+        if choose > len(shop) and choose < 0:
+            print('Input error,try again!')
+            continue
+        cart.append(shop[int(choose)])
         salary -= cart[len(cart)-1][1]
-        print("salary: %d" %(salary))
+        print("salary: \033[31;1m%d\033[0m" %(salary))
         continue
 
